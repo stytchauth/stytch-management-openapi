@@ -5163,11 +5163,13 @@ components:
           $ref: '#/components/schemas/pwa_sdk_v3_B2BPasswordsConfig'
         cookies:
           $ref: '#/components/schemas/pwa_sdk_v3_B2BCookiesConfig'
+        user_impersonation:
+          $ref: '#/components/schemas/pwa_sdk_v3_B2BUserImpersonationConfig'
     pwa_sdk_v3_B2BCookiesConfig:
       type: object
       properties:
         http_only:
-          $ref: '#/components/schemas/pwa_sdk_v3_B2BCookiesConfigHttpOnly'
+          $ref: '#/components/schemas/pwa_sdk_v3_sdk_B2BCookiesConfigHttpOnly'
       required:
       - http_only
     pwa_sdk_v3_B2BDFPPAConfig:
@@ -5177,6 +5179,8 @@ components:
           $ref: '#/components/schemas/pwa_sdk_v3_DFPPASetting'
         on_challenge:
           $ref: '#/components/schemas/pwa_sdk_v3_DFPPAOnChallengeAction'
+        fre_enabled:
+          $ref: '#/components/schemas/pwa_sdk_v3_DFPPASetting'
     pwa_sdk_v3_B2BMagicLinksConfig:
       type: object
       properties:
@@ -5250,6 +5254,13 @@ components:
       required:
       - create_totps
       - enabled
+    pwa_sdk_v3_B2BUserImpersonationConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      required:
+      - enabled
     pwa_sdk_v3_ConsumerBasicConfig:
       type: object
       properties:
@@ -5304,11 +5315,13 @@ components:
           $ref: '#/components/schemas/pwa_sdk_v3_ConsumerPasswordsConfig'
         cookies:
           $ref: '#/components/schemas/pwa_sdk_v3_ConsumerCookiesConfig'
+        user_impersonation:
+          $ref: '#/components/schemas/pwa_sdk_v3_ConsumerUserImpersonationConfig'
     pwa_sdk_v3_ConsumerCookiesConfig:
       type: object
       properties:
         http_only:
-          $ref: '#/components/schemas/pwa_sdk_v3_ConsumerCookiesConfigHttpOnly'
+          $ref: '#/components/schemas/pwa_sdk_v3_sdk_ConsumerCookiesConfigHttpOnly'
       required:
       - http_only
     pwa_sdk_v3_ConsumerCryptoWalletsConfig:
@@ -5328,6 +5341,8 @@ components:
           $ref: '#/components/schemas/pwa_sdk_v3_DFPPASetting'
         on_challenge:
           $ref: '#/components/schemas/pwa_sdk_v3_DFPPAOnChallengeAction'
+        fre_enabled:
+          $ref: '#/components/schemas/pwa_sdk_v3_DFPPASetting'
     pwa_sdk_v3_ConsumerMagicLinksConfig:
       type: object
       properties:
@@ -5406,6 +5421,13 @@ components:
       required:
       - create_totps
       - enabled
+    pwa_sdk_v3_ConsumerUserImpersonationConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      required:
+      - enabled
     pwa_sdk_v3_ConsumerWebAuthnConfig:
       type: object
       properties:
@@ -5420,7 +5442,7 @@ components:
       type: object
       properties:
         metadata_type:
-          $ref: '#/components/schemas/pwa_sdk_v3_SMSAutofillMetadataMetadataType'
+          $ref: '#/components/schemas/pwa_sdk_v3_sdk_SMSAutofillMetadataMetadataType'
         metadata_value:
           type: string
         bundle_id:
@@ -5509,18 +5531,6 @@ components:
       - request_id
       - config
       - status_code
-    pwa_sdk_v3_B2BCookiesConfigHttpOnly:
-      type: string
-      enum:
-      - DISABLED
-      - ENABLED
-      - ENFORCED
-    pwa_sdk_v3_ConsumerCookiesConfigHttpOnly:
-      type: string
-      enum:
-      - DISABLED
-      - ENABLED
-      - ENFORCED
     pwa_sdk_v3_DFPPAOnChallengeAction:
       type: string
       enum:
@@ -5533,7 +5543,19 @@ components:
       - ENABLED
       - PASSIVE
       - DISABLED
-    pwa_sdk_v3_SMSAutofillMetadataMetadataType:
+    pwa_sdk_v3_sdk_B2BCookiesConfigHttpOnly:
+      type: string
+      enum:
+      - DISABLED
+      - ENABLED
+      - ENFORCED
+    pwa_sdk_v3_sdk_ConsumerCookiesConfigHttpOnly:
+      type: string
+      enum:
+      - DISABLED
+      - ENABLED
+      - ENFORCED
+    pwa_sdk_v3_sdk_SMSAutofillMetadataMetadataType:
       type: string
       enum:
       - domain
@@ -5665,7 +5687,8 @@ components:
         jwks_url:
           type: string
         attribute_mapping:
-          type: string
+          type: object
+          additionalProperties: true
         public_key_type:
           $ref: '#/components/schemas/pwa_trusted_token_profile_v3_PublicKeyType'
       required:
@@ -5716,7 +5739,8 @@ components:
         jwks_url:
           type: string
         attribute_mapping:
-          type: string
+          type: object
+          additionalProperties: true
         public_key_type:
           $ref: '#/components/schemas/pwa_trusted_token_profile_v3_PublicKeyType'
       description: Request type
@@ -5836,7 +5860,8 @@ components:
         jwks_url:
           type: string
         attribute_mapping:
-          type: string
+          type: object
+          additionalProperties: true
         can_jit_provision:
           type: boolean
       description: Request type
