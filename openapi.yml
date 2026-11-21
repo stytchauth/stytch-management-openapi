@@ -1985,6 +1985,130 @@ paths:
                 error_message: Oops, something seems to have gone wrong, please reach
                   out to support@stytch.com to let us know what went wrong.
                 error_url: https://stytch.com/docs/api/errors/500
+  /pwa/v3/projects/:project_slug/environments/:environment_slug/twilio_api_key:
+    get:
+      summary: Gettwilioapikey
+      operationId: pwa_project_twilio_api_keys_v3_GetTwilioAPIKey
+      tags:
+      - Project Twilio Api Keys
+      description: Get retrieves the SID of the active Twilio API key for an environment.
+        The secret is never returned.
+      parameters:
+      - name: project_slug
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: environment_slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pwa_project_twilio_api_keys_v3_GetTwilioAPIKeyResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                status_code: 401
+                request_id: request-id-test-b05c992f-ebdc-489d-a754-c7e70ba13141
+                error_type: unauthorized_credentials
+                error_message: Unauthorized credentials.
+                error_url: https://stytch.com/docs/api/errors/401
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              example:
+                status_code: 429
+                request_id: request-id-test-b05c992f-ebdc-489d-a754-c7e70ba13141
+                error_type: too_many_requests
+                error_message: Too many requests have been made.
+                error_url: https://stytch.com/docs/api/errors/429
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                status_code: 500
+                request_id: request-id-test-b05c992f-ebdc-489d-a754-c7e70ba13141
+                error_type: internal_server_error
+                error_message: Oops, something seems to have gone wrong, please reach
+                  out to support@stytch.com to let us know what went wrong.
+                error_url: https://stytch.com/docs/api/errors/500
+    post:
+      summary: Createtwilioapikey
+      operationId: pwa_project_twilio_api_keys_v3_CreateTwilioAPIKey
+      tags:
+      - Project Twilio Api Keys
+      description: Create stores the Twilio API key and secret for an environment.
+        The key is used to call Twilio Fraud Prevention as part of Device Fingerprinting
+        Protected Auth.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pwa_project_twilio_api_keys_v3_CreateTwilioAPIKeyRequest'
+      parameters:
+      - name: project_slug
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: environment_slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pwa_project_twilio_api_keys_v3_CreateTwilioAPIKeyResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                status_code: 401
+                request_id: request-id-test-b05c992f-ebdc-489d-a754-c7e70ba13141
+                error_type: unauthorized_credentials
+                error_message: Unauthorized credentials.
+                error_url: https://stytch.com/docs/api/errors/401
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              example:
+                status_code: 429
+                request_id: request-id-test-b05c992f-ebdc-489d-a754-c7e70ba13141
+                error_type: too_many_requests
+                error_message: Too many requests have been made.
+                error_url: https://stytch.com/docs/api/errors/429
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                status_code: 500
+                request_id: request-id-test-b05c992f-ebdc-489d-a754-c7e70ba13141
+                error_type: internal_server_error
+                error_message: Oops, something seems to have gone wrong, please reach
+                  out to support@stytch.com to let us know what went wrong.
+                error_url: https://stytch.com/docs/api/errors/500
   /pwa/v3/projects/:project_slug/environments/:environment_slug/public_tokens:
     post:
       summary: Create
@@ -4740,6 +4864,51 @@ components:
       enum:
       - ZXCVBN
       - LUDS
+    pwa_project_twilio_api_keys_v3_CreateTwilioAPIKeyRequest:
+      type: object
+      properties:
+        twilio_api_key_sid:
+          type: string
+        twilio_api_key_secret:
+          type: string
+      description: Request type
+      required:
+      - twilio_api_key_sid
+      - twilio_api_key_secret
+    pwa_project_twilio_api_keys_v3_CreateTwilioAPIKeyResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        twilio_api_key_sid:
+          type: string
+        status_code:
+          type: integer
+          format: int32
+      description: Response type
+      required:
+      - request_id
+      - twilio_api_key_sid
+      - status_code
+    pwa_project_twilio_api_keys_v3_GetTwilioAPIKeyRequest:
+      type: object
+      properties: {}
+      description: Request type
+    pwa_project_twilio_api_keys_v3_GetTwilioAPIKeyResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        twilio_api_key_sid:
+          type: string
+        status_code:
+          type: integer
+          format: int32
+      description: Response type
+      required:
+      - request_id
+      - twilio_api_key_sid
+      - status_code
     pwa_public_token_v3_PublicToken:
       type: object
       properties:
@@ -5163,11 +5332,13 @@ components:
           $ref: '#/components/schemas/pwa_sdk_v3_B2BPasswordsConfig'
         cookies:
           $ref: '#/components/schemas/pwa_sdk_v3_B2BCookiesConfig'
+        user_impersonation:
+          $ref: '#/components/schemas/pwa_sdk_v3_B2BUserImpersonationConfig'
     pwa_sdk_v3_B2BCookiesConfig:
       type: object
       properties:
         http_only:
-          $ref: '#/components/schemas/pwa_sdk_v3_B2BCookiesConfigHttpOnly'
+          $ref: '#/components/schemas/pwa_sdk_v3_sdk_B2BCookiesConfigHttpOnly'
       required:
       - http_only
     pwa_sdk_v3_B2BDFPPAConfig:
@@ -5177,6 +5348,8 @@ components:
           $ref: '#/components/schemas/pwa_sdk_v3_DFPPASetting'
         on_challenge:
           $ref: '#/components/schemas/pwa_sdk_v3_DFPPAOnChallengeAction'
+        fre_enabled:
+          $ref: '#/components/schemas/pwa_sdk_v3_DFPPASetting'
     pwa_sdk_v3_B2BMagicLinksConfig:
       type: object
       properties:
@@ -5250,6 +5423,13 @@ components:
       required:
       - create_totps
       - enabled
+    pwa_sdk_v3_B2BUserImpersonationConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      required:
+      - enabled
     pwa_sdk_v3_ConsumerBasicConfig:
       type: object
       properties:
@@ -5304,11 +5484,13 @@ components:
           $ref: '#/components/schemas/pwa_sdk_v3_ConsumerPasswordsConfig'
         cookies:
           $ref: '#/components/schemas/pwa_sdk_v3_ConsumerCookiesConfig'
+        user_impersonation:
+          $ref: '#/components/schemas/pwa_sdk_v3_ConsumerUserImpersonationConfig'
     pwa_sdk_v3_ConsumerCookiesConfig:
       type: object
       properties:
         http_only:
-          $ref: '#/components/schemas/pwa_sdk_v3_ConsumerCookiesConfigHttpOnly'
+          $ref: '#/components/schemas/pwa_sdk_v3_sdk_ConsumerCookiesConfigHttpOnly'
       required:
       - http_only
     pwa_sdk_v3_ConsumerCryptoWalletsConfig:
@@ -5328,6 +5510,8 @@ components:
           $ref: '#/components/schemas/pwa_sdk_v3_DFPPASetting'
         on_challenge:
           $ref: '#/components/schemas/pwa_sdk_v3_DFPPAOnChallengeAction'
+        fre_enabled:
+          $ref: '#/components/schemas/pwa_sdk_v3_DFPPASetting'
     pwa_sdk_v3_ConsumerMagicLinksConfig:
       type: object
       properties:
@@ -5406,6 +5590,13 @@ components:
       required:
       - create_totps
       - enabled
+    pwa_sdk_v3_ConsumerUserImpersonationConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      required:
+      - enabled
     pwa_sdk_v3_ConsumerWebAuthnConfig:
       type: object
       properties:
@@ -5420,7 +5611,7 @@ components:
       type: object
       properties:
         metadata_type:
-          $ref: '#/components/schemas/pwa_sdk_v3_SMSAutofillMetadataMetadataType'
+          $ref: '#/components/schemas/pwa_sdk_v3_sdk_SMSAutofillMetadataMetadataType'
         metadata_value:
           type: string
         bundle_id:
@@ -5509,18 +5700,6 @@ components:
       - request_id
       - config
       - status_code
-    pwa_sdk_v3_B2BCookiesConfigHttpOnly:
-      type: string
-      enum:
-      - DISABLED
-      - ENABLED
-      - ENFORCED
-    pwa_sdk_v3_ConsumerCookiesConfigHttpOnly:
-      type: string
-      enum:
-      - DISABLED
-      - ENABLED
-      - ENFORCED
     pwa_sdk_v3_DFPPAOnChallengeAction:
       type: string
       enum:
@@ -5533,7 +5712,19 @@ components:
       - ENABLED
       - PASSIVE
       - DISABLED
-    pwa_sdk_v3_SMSAutofillMetadataMetadataType:
+    pwa_sdk_v3_sdk_B2BCookiesConfigHttpOnly:
+      type: string
+      enum:
+      - DISABLED
+      - ENABLED
+      - ENFORCED
+    pwa_sdk_v3_sdk_ConsumerCookiesConfigHttpOnly:
+      type: string
+      enum:
+      - DISABLED
+      - ENABLED
+      - ENFORCED
+    pwa_sdk_v3_sdk_SMSAutofillMetadataMetadataType:
       type: string
       enum:
       - domain
@@ -5665,7 +5856,8 @@ components:
         jwks_url:
           type: string
         attribute_mapping:
-          type: string
+          type: object
+          additionalProperties: true
         public_key_type:
           $ref: '#/components/schemas/pwa_trusted_token_profile_v3_PublicKeyType'
       required:
@@ -5716,7 +5908,8 @@ components:
         jwks_url:
           type: string
         attribute_mapping:
-          type: string
+          type: object
+          additionalProperties: true
         public_key_type:
           $ref: '#/components/schemas/pwa_trusted_token_profile_v3_PublicKeyType'
       description: Request type
@@ -5836,7 +6029,8 @@ components:
         jwks_url:
           type: string
         attribute_mapping:
-          type: string
+          type: object
+          additionalProperties: true
         can_jit_provision:
           type: boolean
       description: Request type
